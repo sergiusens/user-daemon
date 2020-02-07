@@ -1,0 +1,38 @@
+name: user-daemon
+base: core18
+version: '0.1'
+summary: Two deamons, one running as root, another as snap_deamon
+description: |
+  Two deamons, running from the same code base that print out the user
+  and group the deamon is running under.
+
+  This is not production ready.
+
+grade: stable
+confinement: strict
+
+system-usernames:
+  snap_daemon: shared
+
+apps:
+  root:
+    command: bin/daemon 8080
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+
+  user:
+    command: drop-user $SNAP/bin/daemon
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+
+parts:
+  drop-user:
+    source: drop_user
+    plugin: make
+  daemon:
+    source: daemon
+    plugin: python

@@ -1,0 +1,45 @@
+* Introduction
+
+A very simple example for dropping to the snap_daemon system user
+from a snap based on the Snapcraft documention for [[https://snapcraft.io/docs/system-usernames][System Usernames]].
+
+The same http server is run on different ports (8000 and 8080)
+
+This is an alternative to the [[https://git.launchpad.net/~jdstrand/+git/test-setgroups/tree/?_ga=2.35717088.1377426695.1580817447-1051580855.1578004882][documented]] example using =LD_PRELOAD=.
+
+#+BEGIN_QUOTE
+The code quality has not been thoroughly reviewed and mostly exists to
+present functionality.
+#+END_QUOTE
+
+** Setting up
+
+   At the time of this writing, you can get the =system-user= functionality
+   by using Snapcraft from the =edge= channel.
+
+   #+BEGIN_EXAMPLE
+   $ snap install snapcraft --edge --classic
+   #+END_EXAMPLE
+   
+   The proceed to build
+   
+   #+BEGIN_EXAMPLE
+   $ git clone https://github.com/sergiusens/user-daemon
+   $ cd user-daemon
+   $ snapcraft
+   #+END_EXAMPLE
+
+   And finally install
+   #+BEGIN_EXAMPLE
+   $ snap install --dangerous user-daemon_*.snap
+   #+END_EXAMPLE
+   
+** Trying it out
+   Use a browser or =curl= to hit http://localhost:8000 and http://localhost:8080
+   
+   #+BEGIN_EXAMPLE
+   $ snapcraft-user-daemon # curl http://localhost:8000
+   snap_daemon (584788)
+   $ snapcraft-user-daemon # curl http://localhost:8080
+   root (0)
+   #+END_EXAMPLE
